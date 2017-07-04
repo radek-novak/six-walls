@@ -1,15 +1,17 @@
 import BABYLON from '../Babylon'
+import config from './config'
 
 export default function roomSetup(scene) {
-    // Material
+  const roomLength = config.room.length
+  const planeSize = config.planeSize
+  
+  // Material
   const matPlan = new BABYLON.StandardMaterial("matPlan1", scene)
   matPlan.backFaceCulling = false
   matPlan.emissiveColor = new BABYLON.Color3(0.2, 0.25, 0.2)
-
-  // const roomWidth = 20
-  // const roomHeight = 20
-  const roomLength = 5
-  const planeSize = 20
+  const matFrontBack = new BABYLON.StandardMaterial("matPlan2", scene)
+  matFrontBack.backFaceCulling = false
+  matFrontBack.diffuseColor = new BABYLON.Color3(0.1, 0.01, 0.12)
 
   const top = BABYLON.Mesh.CreatePlane("top", planeSize, scene)
   const bottom = BABYLON.Mesh.CreatePlane("bottom", planeSize, scene)
@@ -18,6 +20,8 @@ export default function roomSetup(scene) {
   const front = BABYLON.Mesh.CreatePlane("front", planeSize, scene)
   const back = BABYLON.Mesh.CreatePlane("back", planeSize, scene)
 
+  front.position = new BABYLON.Vector3(0, 0, (roomLength*planeSize)/2)
+  back.position = new BABYLON.Vector3(0, 0, -(roomLength*planeSize)/2)
   bottom.position = new BABYLON.Vector3(0, planeSize/2, 0)
   top.position = new BABYLON.Vector3(0, -planeSize/2, 0)
   left.position = new BABYLON.Vector3(-planeSize/2, 0, 0)
@@ -38,11 +42,17 @@ export default function roomSetup(scene) {
   top.material = matPlan
   left.material = matPlan
   right.material = matPlan
+  front.material = matFrontBack
+  back.material = matFrontBack
+
+  front.visibility = 0.1
 
   top.physicsImpostor = new BABYLON.PhysicsImpostor(top, BABYLON.PhysicsImpostor.BoxImpostor, { mass: 0, restitution: 1 }, scene)
   bottom.physicsImpostor = new BABYLON.PhysicsImpostor(bottom, BABYLON.PhysicsImpostor.BoxImpostor, { mass: 0, restitution: 1 }, scene)
   left.physicsImpostor = new BABYLON.PhysicsImpostor(left, BABYLON.PhysicsImpostor.BoxImpostor, { mass: 0, restitution: 1 }, scene)
   right.physicsImpostor = new BABYLON.PhysicsImpostor(right, BABYLON.PhysicsImpostor.BoxImpostor, { mass: 0, restitution: 1 }, scene)
+  front.physicsImpostor = new BABYLON.PhysicsImpostor(front, BABYLON.PhysicsImpostor.BoxImpostor, { mass: 0, restitution: 1 }, scene)
+  back.physicsImpostor = new BABYLON.PhysicsImpostor(back, BABYLON.PhysicsImpostor.BoxImpostor, { mass: 0, restitution: 1 }, scene)
 
   return {top, bottom, left, right, front, back}
 }
