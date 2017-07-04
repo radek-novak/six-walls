@@ -33,7 +33,7 @@ function setup(canvas, engine) {
     paddle.visibility = 0.5
 
     // paddle.rotation.y = Math.PI / 2
-    paddle.position.z = config.room.length * config.planeSize / 2
+    paddle.position.z = config.room.length * config.planeSize / 2 - 0.001
 
 
     paddle.physicsImpostor = new BABYLON.PhysicsImpostor(paddle, BABYLON.PhysicsImpostor.BoxImpostor, { mass: 0, restitution: 1 }, scene)
