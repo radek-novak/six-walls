@@ -47,12 +47,12 @@ export default function roomSetup(scene) {
 
   front.visibility = 0.1
 
-  top.physicsImpostor = new BABYLON.PhysicsImpostor(top, BABYLON.PhysicsImpostor.BoxImpostor, { mass: 0, restitution: 1 }, scene)
-  bottom.physicsImpostor = new BABYLON.PhysicsImpostor(bottom, BABYLON.PhysicsImpostor.BoxImpostor, { mass: 0, restitution: 1 }, scene)
-  left.physicsImpostor = new BABYLON.PhysicsImpostor(left, BABYLON.PhysicsImpostor.BoxImpostor, { mass: 0, restitution: 1 }, scene)
-  right.physicsImpostor = new BABYLON.PhysicsImpostor(right, BABYLON.PhysicsImpostor.BoxImpostor, { mass: 0, restitution: 1 }, scene)
-  front.physicsImpostor = new BABYLON.PhysicsImpostor(front, BABYLON.PhysicsImpostor.BoxImpostor, { mass: 0, restitution: 1 }, scene)
-  back.physicsImpostor = new BABYLON.PhysicsImpostor(back, BABYLON.PhysicsImpostor.BoxImpostor, { mass: 0, restitution: 1 }, scene)
+  top.physicsImpostor = new BABYLON.PhysicsImpostor(top, BABYLON.PhysicsImpostor.BoxImpostor, { mass: 0, restitution: 1, friction: 0.5 }, scene)
+  bottom.physicsImpostor = new BABYLON.PhysicsImpostor(bottom, BABYLON.PhysicsImpostor.BoxImpostor, { mass: 0, restitution: 1, friction: 0.5 }, scene)
+  left.physicsImpostor = new BABYLON.PhysicsImpostor(left, BABYLON.PhysicsImpostor.BoxImpostor, { mass: 0, restitution: 1, friction: 0.5 }, scene)
+  right.physicsImpostor = new BABYLON.PhysicsImpostor(right, BABYLON.PhysicsImpostor.BoxImpostor, { mass: 0, restitution: 1, friction: 0.5 }, scene)
+  front.physicsImpostor = new BABYLON.PhysicsImpostor(front, BABYLON.PhysicsImpostor.BoxImpostor, { mass: 0, restitution: 1, friction: 0.5 }, scene)
+  back.physicsImpostor = new BABYLON.PhysicsImpostor(back, BABYLON.PhysicsImpostor.BoxImpostor, { mass: 0, restitution: 1, friction: 0.5 }, scene)
 
   return {top, bottom, left, right, front, back}
 }
