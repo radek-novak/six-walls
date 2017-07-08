@@ -1,11 +1,12 @@
 import {throttle} from 'lodash'
-// import config from './config'
+import config from './config'
 import roomSetup from './room'
 import ballSetup from './ball'
 import camera from './camera'
 import light from './light'
 import physics from './physics'
 import paddleSetup from './paddle'
+import {limitRange} from '../helpers/limit'
 import BABYLON from '../Babylon'
 
 export default function setup(canvas, engine) {
@@ -21,14 +22,15 @@ export default function setup(canvas, engine) {
     const ball = ballSetup(scene)
     const {front} = roomSetup(scene)
     const paddle = paddleSetup(scene)
+    const paddleLimits = front.getBoundingInfo().boundingBox
 
     var onPointerMove = throttle(function (evt) {
       const pickResult = scene.pick(scene.pointerX, scene.pointerY);
 
       if (pickResult.hit && pickResult.pickedMesh === front) {
         const point = pickResult.pickedPoint
-        paddle.position.x = point.x
-        paddle.position.y = point.y
+        paddle.position.x = limitRange(point.x, config.paddleSize, paddleLimits.minimum.x, paddleLimits.maximum.x)
+        paddle.position.y = limitRange(point.y, config.paddleSize, paddleLimits.minimum.y, paddleLimits.maximum.y)
       }
     }, 16)
 
@@ -38,15 +40,31 @@ export default function setup(canvas, engine) {
       canvas.removeEventListener("pointermove", onPointerMove);
     }
 
-    // scene.registerBeforeRender(function () {
-    //   const hitPaddle = ball.intersectsMesh(paddle, true)
-    //   if(ball.intersectsMesh(front, true) && !hitPaddle) ball.position.z = 0
-    // })
+    scene.registerBeforeRender(function () {
+      const hitPaddle = ball.intersectsMesh(paddle, true)
+      const hitFront = ball.intersectsMesh(front, true)
+      // if(ball.intersectsMesh(front, true) && !hitPaddle) // lost
 
-    ball.physicsImpostor.registerOnPhysicsCollide(paddle.physicsImpostor, () => {
-      paddle.visibility = 1
-      window.setTimeout(() => {paddle.visibility = 0.5}, 200)
-    });
+      if(hitPaddle) {
+        paddle.visibility = 0.9
+        ball.physicsImpostor.applyImpulse(new BABYLON.Vector3(0, 0, -10), ball.getAbsolutePosition());
+        console.log('hit')
+        window.setTimeout(() => {paddle.visibility = 0.5}, 100)
+      }
+
+      if (hitFront && !hitPaddle) {
+        
+      }
+    })
+    // ball.physicsImpostor.registerOnPhysicsCollide(front.physicsImpostor, () => {
+    //   console.log('hit wall')
+    // })
+    // ball.physicsImpostor.registerOnPhysicsCollide(paddle.physicsImpostor, () => {
+    //   paddle.visibility = 0.9
+    //   ball.physicsImpostor.applyImpulse(new BABYLON.Vector3(0, 0, -99520), ball.getAbsolutePosition());
+    //   console.log('hit')
+    //   window.setTimeout(() => {paddle.visibility = 0.5}, 100)
+    // });
 
     return scene
   }
