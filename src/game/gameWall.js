@@ -2,7 +2,6 @@ import BABYLON from '../Babylon'
 
 export default function gameWall(paddle, wall, ball, game, hit) {
   let isHittingPaddle = false;
-  let isHittingFront = false;
   const hitPaddle = ball.intersectsMesh(paddle, true)
   const hitWall = ball.intersectsMesh(wall, true)
 
@@ -20,7 +19,6 @@ export default function gameWall(paddle, wall, ball, game, hit) {
   }
 
   if (hitWall && !hitPaddle && !isHittingPaddle) {
-    console.log('game wall:', hitWall, hitPaddle, isHittingPaddle)
     game.lost()
   }
 }

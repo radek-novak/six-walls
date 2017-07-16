@@ -5,7 +5,7 @@ const normalColor = new BABYLON.Color3(0.1, 0.1, 0.32)
 const hitColor = new BABYLON.Color3(0.1, 0.82, 0.1)
 
 export function paddle(scene) {
-  const paddle = BABYLON.Mesh.CreatePlane("top", config.paddleSize, scene, false, BABYLON.Mesh.DOUBLESIDE)
+  const paddle = BABYLON.Mesh.CreatePlane('paddle', config.paddleSize, scene, false, BABYLON.Mesh.DOUBLESIDE)
   paddle.position = new BABYLON.Vector3(0, 0, 0)
   paddle.emissiveColor = normalColor
   paddle.rotation.z = Math.PI / 2

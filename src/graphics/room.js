@@ -11,7 +11,7 @@ export default function roomSetup(scene) {
   matPlan.emissiveColor = new BABYLON.Color3(0.2, 0.25, 0.2)
   const matFrontBack = new BABYLON.StandardMaterial("matPlan2", scene)
   matFrontBack.backFaceCulling = false
-  matFrontBack.diffuseColor = new BABYLON.Color3(0.1, 0.01, 0.12)
+  matFrontBack.diffuseColor = new BABYLON.Color3(0.01, 0.01, 0.02)
 
   const top = BABYLON.Mesh.CreatePlane("top", planeSize, scene)
   const bottom = BABYLON.Mesh.CreatePlane("bottom", planeSize, scene)
@@ -45,7 +45,8 @@ export default function roomSetup(scene) {
   front.material = matFrontBack
   back.material = matFrontBack
 
-  front.visibility = 0.1
+  front.visibility = 0.01
+  back.visibility = 0.01
 
   top.physicsImpostor = new BABYLON.PhysicsImpostor(top, BABYLON.PhysicsImpostor.BoxImpostor, { mass: 0, restitution: 1, friction: 0 }, scene)
   bottom.physicsImpostor = new BABYLON.PhysicsImpostor(bottom, BABYLON.PhysicsImpostor.BoxImpostor, { mass: 0, restitution: 1, friction: 0 }, scene)

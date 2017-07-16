@@ -17,11 +17,12 @@ export default function setup(canvas, engine, updateState) {
 
   const createScene = function () {
     const scene = new BABYLON.Scene(engine)
-
+    scene.clearColor = new BABYLON.Color3(1, 1, 1);
+    
     camera(scene, canvas)
     physics(scene)
     light(scene)
-    const {ballMesh, startBall, resetBall} = ballSetup(scene)
+    const {ballMesh} = ballSetup(scene)
     const {front, back, bottom} = roomSetup(scene)
     const fPaddleObj = frontPaddle(scene)
     const bPaddleObj = backPaddle(scene)
@@ -29,6 +30,12 @@ export default function setup(canvas, engine, updateState) {
     const bPaddle = bPaddleObj.paddle
     const paddleLimits = front.getBoundingInfo().boundingBox
 
+    var mirrorMaterial = new BABYLON.StandardMaterial("texture4", scene);
+    mirrorMaterial.reflectionTexture = new BABYLON.MirrorTexture("mirror", 512, scene, true);
+    mirrorMaterial.reflectionTexture.mirrorPlane = new BABYLON.Plane(0, -1.0, 0, -10.0);
+    mirrorMaterial.reflectionTexture.renderList = [ballMesh]
+
+    bottom.material = mirrorMaterial
     var onPointerMove = throttle(function (evt) {
       const pickResult = scene.pick(scene.pointerX, scene.pointerY);
 

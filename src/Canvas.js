@@ -13,8 +13,6 @@ class Canvas extends Component {
   }
 
   updateState(state) {
-    console.log('update state');
-    
     this.setState({ ...state })
   }
 

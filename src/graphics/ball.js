@@ -12,11 +12,21 @@ export default function ballSetup(scene) {
   sphere.physicsImpostor = new BABYLON.PhysicsImpostor(sphere, BABYLON.PhysicsImpostor.SphereImpostor, { mass: 1, restitution: 1.01, friction: 0 }, scene)
   // sphere.physicsImpostor.setLinearVelocity(new BABYLON.Vector3(7,5,20))
 
-  var materialSphere4 = new BABYLON.StandardMaterial("texture4", scene);
-  materialSphere4.diffuseTexture = new BABYLON.Texture("soccer_sph.png", scene);
-  materialSphere4.diffuseTexture.vOffset = 0.1;//Vertical offset of 10%
-  materialSphere4.diffuseTexture.uOffset = 0.4;//Horizontal offset of 40%
-  sphere.material = materialSphere4;
+  // var materialSphere4 = new BABYLON.StandardMaterial("texture4", scene);
+  // materialSphere4.diffuseTexture = new BABYLON.Texture("soccer_sph.png", scene);
+  // materialSphere4.diffuseTexture.vOffset = 0.1;//Vertical offset of 10%
+  // materialSphere4.diffuseTexture.uOffset = 0.4;//Horizontal offset of 40%
+  // sphere.material = materialSphere4;
+  const material = new BABYLON.StandardMaterial("kosh4", scene);
+  material.diffuseColor = new BABYLON.Color3(0, 0, 0);
+  material.emissiveColor = BABYLON.Color3.White();
+  material.specularPower = 64;
+  material.emissiveFresnelParameters = new BABYLON.FresnelParameters();
+  material.emissiveFresnelParameters.power = 4;
+  material.emissiveFresnelParameters.bias = 0.45;
+  material.emissiveFresnelParameters.leftColor = new BABYLON.Color3(0.2, 0.1, 0.7);
+  material.emissiveFresnelParameters.rightColor = BABYLON.Color3.Black();
+  sphere.material = material
 
   resetBall = function resetBall() {
     sphere.position = BABYLON.Vector3.Zero()
