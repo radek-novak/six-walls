@@ -23,19 +23,21 @@ export default function setup(canvas, engine, updateState) {
     physics(scene)
     light(scene)
     const {ballMesh} = ballSetup(scene)
-    const {front, back, bottom} = roomSetup(scene)
+    const {front, back, bottom, top} = roomSetup(scene)
     const fPaddleObj = frontPaddle(scene)
     const bPaddleObj = backPaddle(scene)
     const fPaddle = fPaddleObj.paddle
     const bPaddle = bPaddleObj.paddle
     const paddleLimits = front.getBoundingInfo().boundingBox
 
-    var mirrorMaterial = new BABYLON.StandardMaterial("texture4", scene);
-    mirrorMaterial.reflectionTexture = new BABYLON.MirrorTexture("mirror", 512, scene, true);
-    mirrorMaterial.reflectionTexture.mirrorPlane = new BABYLON.Plane(0, -1.0, 0, -10.0);
-    mirrorMaterial.reflectionTexture.renderList = [ballMesh]
+    // var mirrorMaterial = new BABYLON.StandardMaterial("texture4", scene);
+    // mirrorMaterial.reflectionTexture = new BABYLON.MirrorTexture("mirror", 512, scene, true);
+    // mirrorMaterial.reflectionTexture.mirrorPlane = new BABYLON.Plane(0, -1.0, 0, -10.0);
+    // mirrorMaterial.reflectionTexture.renderList = [ballMesh, bPaddle, fPaddle]
 
-    bottom.material = mirrorMaterial
+    // bottom.material = mirrorMaterial
+    // top.material = mirrorMaterial
+
     var onPointerMove = throttle(function (evt) {
       const pickResult = scene.pick(scene.pointerX, scene.pointerY);
 
