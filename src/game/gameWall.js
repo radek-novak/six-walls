@@ -1,6 +1,6 @@
 import BABYLON from '../Babylon'
 
-export default function gameWall(paddle, wall, ball, game) {
+export default function gameWall(paddle, wall, ball, game, hit) {
   let isHittingPaddle = false;
   let isHittingFront = false;
   const hitPaddle = ball.intersectsMesh(paddle, true)
@@ -11,9 +11,8 @@ export default function gameWall(paddle, wall, ball, game) {
     if (isHittingPaddle) return
 
     game.incrementScore();
-    paddle.visibility = 0.9
     ball.physicsImpostor.applyImpulse(new BABYLON.Vector3(0, 0, -0.1), ball.getAbsolutePosition());
-    window.setTimeout(() => {paddle.visibility = 0.5}, 100)
+    hit()
 
     isHittingPaddle = true
   } else {

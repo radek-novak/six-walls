@@ -1,3 +1,4 @@
+import BABYLON from '../Babylon'
 import {throttle} from 'lodash'
 import config from './config'
 import roomSetup from './room'
@@ -7,11 +8,10 @@ import light from './light'
 import physics from './physics'
 import {frontPaddle, backPaddle} from './paddle'
 import {limitRange} from '../helpers/limit'
-import BABYLON from '../Babylon'
 import {game} from '../game/state'
 import gameWall from '../game/gameWall'
 
-export default function setup(canvas, engine) {
+export default function setup(canvas, engine, updateState) {
   canvas.width = window.innerWidth
   canvas.height = window.innerHeight
 
@@ -22,9 +22,11 @@ export default function setup(canvas, engine) {
     physics(scene)
     light(scene)
     const {ballMesh, startBall, resetBall} = ballSetup(scene)
-    const {front, back} = roomSetup(scene)
-    const fPaddle = frontPaddle(scene)
-    const bPaddle = backPaddle(scene)
+    const {front, back, bottom} = roomSetup(scene)
+    const fPaddleObj = frontPaddle(scene)
+    const bPaddleObj = backPaddle(scene)
+    const fPaddle = fPaddleObj.paddle
+    const bPaddle = bPaddleObj.paddle
     const paddleLimits = front.getBoundingInfo().boundingBox
 
     var onPointerMove = throttle(function (evt) {
@@ -41,6 +43,8 @@ export default function setup(canvas, engine) {
       }
     }, 16)
 
+    game.onupdate = updateState
+
 
     canvas.addEventListener('click', ()=> {
       if (game.isPaused()) return game.start()
@@ -52,8 +56,8 @@ export default function setup(canvas, engine) {
     scene.onDispose = () => canvas.removeEventListener("pointermove", onPointerMove)
 
     scene.registerBeforeRender(() => {
-      gameWall(fPaddle, front, ballMesh, game)
-      gameWall(bPaddle, back, ballMesh, game)
+      gameWall(fPaddle, front, ballMesh, game, fPaddleObj.hit)
+      gameWall(bPaddle, back, ballMesh, game, bPaddleObj.hit)
     })
 
     return scene

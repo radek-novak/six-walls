@@ -7,15 +7,25 @@ const STATE = {
 }
 
 const game = {
-  points: 0,
+  _points: 0,
   _state: STATE.PAUSED,
 
   get state() {
     return this._state
   },
 
+  get points() {
+    return this._points
+  },
+
   set state(newstate) {
     this._state = newstate
+    this.onupdate({points: this.points, state: this.state})
+  },
+
+  set points(newpoints) {
+    this._points = newpoints
+    this.onupdate({points: this.points, state: this.state})
   },
 
   start() {
@@ -23,9 +33,10 @@ const game = {
     this.points = 0
     startBall()
   },
-
+  
   reset() {
     this.state = STATE.PAUSED
+    this.points = 0
     resetBall()
   },
 
@@ -47,7 +58,9 @@ const game = {
 
   isPaused() {
     return this.state === STATE.PAUSED
-  }
+  },
+
+  onupdate() {}
 }
 
 export {game}
