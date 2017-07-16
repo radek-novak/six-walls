@@ -5,7 +5,7 @@ export default function ballSetup(scene) {
   const sphere = BABYLON.Mesh.CreateSphere("sphere1", 16, 2, scene)
 
   sphere.position.y = 0
-  sphere.physicsImpostor = new BABYLON.PhysicsImpostor(sphere, BABYLON.PhysicsImpostor.SphereImpostor, { mass: 1, restitution: 1.05, friction: 0.1 }, scene)
+  sphere.physicsImpostor = new BABYLON.PhysicsImpostor(sphere, BABYLON.PhysicsImpostor.SphereImpostor, { mass: 1, restitution: 1.01, friction: 0 }, scene)
   sphere.physicsImpostor.setLinearVelocity(new BABYLON.Vector3(7,5,20))
 
   var materialSphere4 = new BABYLON.StandardMaterial("texture4", scene);

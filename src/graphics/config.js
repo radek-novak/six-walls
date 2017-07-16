@@ -1,6 +1,6 @@
 export default {
   room: {
-    length: 5,
+    length: 1,
   },
   planeSize: 20,
   paddleSize: 5
