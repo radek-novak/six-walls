@@ -1,4 +1,4 @@
-import {Subject} from 'rxjs'
+import {startBall, resetBall, stopBall} from '../graphics/ball'
 
 const STATE = {
   LOST: 'LOST',
@@ -6,33 +6,48 @@ const STATE = {
   PLAYING: 'PLAYING'
 }
 
-const subject = (new Subject()).share()
-
-let state = {
-  state: STATE.PLAYING,
-  points: 0
-}
-
-const state$ = subject.scan((acc, current) => {
-  const ret = { ...acc, ...current }
-
-  state = ret
-
-  return ret
-}, state)
-
 const game = {
-  start: () => subject.next({state: STATE.PLAYING, points: 0}),
-  pause: () => subject.next({state: STATE.PAUSE}),
-  unpause: () => subject.next({state: STATE.PLAYING}),
-  lost: () => subject.next({state: STATE.LOST}),
-  incrementScore: () => subject.next({points: state.points + 1})
+  points: 0,
+  _state: STATE.PAUSED,
+
+  get state() {
+    return this._state
+  },
+
+  set state(newstate) {
+    this._state = newstate
+  },
+
+  start() {
+    this.state = STATE.PLAYING
+    this.points = 0
+    startBall()
+  },
+
+  reset() {
+    this.state = STATE.PAUSED
+    resetBall()
+  },
+
+  lost() {
+    this.state = STATE.LOST
+    stopBall()
+  },
+  incrementScore() {
+    this.points = this.points + 1
+  },
+
+  isPlaying() {
+    return this.state === STATE.PLAYING
+  },
+
+  isLost() {
+    return this.state === STATE.LOST
+  },
+
+  isPaused() {
+    return this.state === STATE.PAUSED
+  }
 }
 
-const playing$ = subject.map(s => s.state === STATE.PLAYING)
-
-export {
-  playing$,
-  state$,
-  game
-}
+export {game}

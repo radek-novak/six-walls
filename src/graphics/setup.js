@@ -8,8 +8,7 @@ import physics from './physics'
 import {frontPaddle, backPaddle} from './paddle'
 import {limitRange} from '../helpers/limit'
 import BABYLON from '../Babylon'
-import {game, state$, playing$} from '../game/state'
-import {Observable} from 'rxjs'
+import {game} from '../game/state'
 
 export default function setup(canvas, engine) {
   canvas.width = window.innerWidth
@@ -21,7 +20,7 @@ export default function setup(canvas, engine) {
     camera(scene, canvas)
     physics(scene)
     light(scene)
-    const ball = ballSetup(scene)
+    const {ballMesh, startBall, resetBall} = ballSetup(scene)
     const {front} = roomSetup(scene)
     const fPaddle = frontPaddle(scene)
     const bPaddle = backPaddle(scene)
@@ -41,71 +40,23 @@ export default function setup(canvas, engine) {
       }
     }, 16)
 
+
+    canvas.addEventListener('click', ()=> {
+      if (game.isPaused()) return game.start()
+      if (game.isLost()) return game.reset()
+    })
+
     canvas.addEventListener("pointermove", onPointerMove, false);
 
-    scene.onDispose = function () {
-      canvas.removeEventListener("pointermove", onPointerMove);
-    }
-    game.start()
-    // playing$.distinctUntilChanged().subscribe(isPlaying => {
-    //   console.log('playing', isPlaying)
-    //   if (!isPlaying) {
-    //     ball.position = BABYLON.Vector3.Zero()
-    //     ball.physicsImpostor.setLinearVelocity(BABYLON.Vector3.Zero())
-    //   }
-    // })
-    
-    // const click$ = Observable.fromEvent(document, 'click');
-    // playing$.subscribe(isPlaying => {
-    //   console.log('stopping game', isPlaying)
-    //   if(!isPlaying) {
-    //     ball.position = BABYLON.Vector3.Zero()
-    //     ball.physicsImpostor.setLinearVelocity(BABYLON.Vector3.Zero())
-    //   }
-    // })
-
-
-    // click$.withLatestFrom(playing$).subscribe(([click, playing]) => {
-    //   console.log('with latest', playing, click)
-    //   if (!playing) {
-    //     ball.physicsImpostor.setLinearVelocity(new BABYLON.Vector3(7,5,20))
-    //   }
-    // })
-    // playing$.filter(x => !x)
-    //   .merge(click$)
-    //   .subscribe(x => {
-    //     game.start()
-    //     ball.physicsImpostor.setLinearVelocity(new BABYLON.Vector3(7,5,20))
-    //   })
-    // playing$.next(true)
-    // click$.subscribe(x => {
-    //   console.log('paused: ', x)
-    //   game.start()
-    //   ball.physicsImpostor.setLinearVelocity(new BABYLON.Vector3(7,5,20))
-    // })//.subscribe(x => console.log('click sub', x))
-
-    // Observable.combineLatest(playing$, click$, (p, c) => ({playing: p, click: c})).subscribe(({playing, click}) => {
-    //   // const isPlaying = data[0]
-    //   // const click = data[1]
-
-    //   console.log('merged', playing, click)
-    //   if (!playing) {
-    //     ball.position = BABYLON.Vector3.Zero()
-    //     ball.physicsImpostor.setLinearVelocity(BABYLON.Vector3.Zero())
-    //   }
-    //   if(!playing && click) {
-    //     game.start()
-    //     ball.physicsImpostor.setLinearVelocity(new BABYLON.Vector3(7,5,20))
-    //   }
-    // })
+    scene.onDispose = () => canvas.removeEventListener("pointermove", onPointerMove)
 
     scene.registerBeforeRender((function () {
       let isHittingPaddle = false;
       let isHittingFront = false;
 
       return () => {
-        const hitPaddle = ball.intersectsMesh(fPaddle, true)
-        const hitFront = ball.intersectsMesh(front, true)
+        const hitPaddle = ballMesh.intersectsMesh(fPaddle, true)
+        const hitFront = ballMesh.intersectsMesh(front, true)
 
         if(hitPaddle) {
           // ball.physicsImpostor.registerOnPhysicsCollide
@@ -113,7 +64,7 @@ export default function setup(canvas, engine) {
 
           game.incrementScore();
           fPaddle.visibility = 0.9
-          ball.physicsImpostor.applyImpulse(new BABYLON.Vector3(0, 0, -0.1), ball.getAbsolutePosition());
+          ballMesh.physicsImpostor.applyImpulse(new BABYLON.Vector3(0, 0, -0.1), ballMesh.getAbsolutePosition());
           window.setTimeout(() => {fPaddle.visibility = 0.5}, 100)
 
           isHittingPaddle = true
@@ -122,7 +73,6 @@ export default function setup(canvas, engine) {
         }
 
         if (hitFront && !hitPaddle && !isHittingPaddle) {
-          console.log('lost', hitFront, hitPaddle, hitFront)
           game.lost()
         }
       }
