@@ -1,6 +1,7 @@
 import BABYLON from '../Babylon'
 import config from './config'
 
+
 export default function roomSetup(scene) {
   const roomLength = config.room.length
   const planeSize = config.planeSize
@@ -12,6 +13,10 @@ export default function roomSetup(scene) {
   const matFrontBack = new BABYLON.StandardMaterial("matPlan2", scene)
   matFrontBack.backFaceCulling = false
   matFrontBack.diffuseColor = new BABYLON.Color3(0.01, 0.01, 0.02)
+
+	var roadmaterial = new BABYLON.StandardMaterial("road", scene);
+  var roadmaterialpt = new BABYLON.RoadProceduralTexture("customtext", 512, scene);
+  roadmaterial.diffuseTexture = roadmaterialpt;
 
   const top = BABYLON.Mesh.CreatePlane("top", planeSize, scene)
   const bottom = BABYLON.Mesh.CreatePlane("bottom", planeSize, scene)
@@ -31,17 +36,17 @@ export default function roomSetup(scene) {
   left.scaling = new BABYLON.Vector3(1, roomLength, 1)
   right.scaling = new BABYLON.Vector3(1, roomLength, 1)
 
-  left.rotation.y = Math.PI / 2
+  left.rotation.y = 3*Math.PI / 2
   right.rotation.y = Math.PI / 2
   left.rotation.z = Math.PI / 2
   right.rotation.z = Math.PI / 2
   top.rotation.x = Math.PI / 2
-  bottom.rotation.x = Math.PI / 2
+  bottom.rotation.x = 3* Math.PI / 2
 
-  bottom.material = matPlan
-  top.material = matPlan
-  left.material = matPlan
-  right.material = matPlan
+  bottom.material = roadmaterial
+  top.material = roadmaterial
+  left.material = roadmaterial
+  right.material = roadmaterial
   front.material = matFrontBack
   back.material = matFrontBack
 
