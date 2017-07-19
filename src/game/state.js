@@ -1,4 +1,5 @@
 import {startBall, resetBall, stopBall} from '../graphics/ball'
+import {drawText} from '../graphics/room'
 
 const STATE = {
   LOST: 'LOST',
@@ -25,6 +26,7 @@ const game = {
 
   set points(newpoints) {
     this._points = newpoints
+    drawText(this.points)
     this.onupdate({points: this.points, state: this.state})
   },
 
