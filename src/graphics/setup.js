@@ -30,14 +30,6 @@ export default function setup(canvas, engine, updateState) {
     const bPaddle = bPaddleObj.paddle
     const paddleLimits = front.getBoundingInfo().boundingBox
 
-    // var mirrorMaterial = new BABYLON.StandardMaterial("texture4", scene);
-    // mirrorMaterial.reflectionTexture = new BABYLON.MirrorTexture("mirror", 512, scene, true);
-    // mirrorMaterial.reflectionTexture.mirrorPlane = new BABYLON.Plane(0, -1.0, 0, -10.0);
-    // mirrorMaterial.reflectionTexture.renderList = [ballMesh, bPaddle, fPaddle]
-
-    // bottom.material = mirrorMaterial
-    // top.material = mirrorMaterial
-
     var onPointerMove = throttle(function (evt) {
       const pickResult = scene.pick(scene.pointerX, scene.pointerY);
 

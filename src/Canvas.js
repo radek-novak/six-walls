@@ -25,7 +25,6 @@ class Canvas extends Component {
   render() {
     return (
       <div>
-        <div>{this.state.points}</div>
         <canvas
           width="800"
           height="800"
