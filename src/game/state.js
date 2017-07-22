@@ -5,6 +5,11 @@ import {
   topBottom
 } from '../graphics/room'
 
+import {
+  leftRightPaddle,
+  topBottomPaddle
+} from '../graphics/paddle'
+
 const STATE = {
   LOST: 'LOST',
   PAUSED: 'PAUSED',
@@ -50,6 +55,8 @@ const game = {
     this._level = newlevel
     topBottom(newlevel <= 1)
     leftRight(newlevel <= 2)
+    topBottomPaddle(newlevel > 1)
+    leftRightPaddle(newlevel > 2)
   },
 
   start() {

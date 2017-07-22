@@ -67,6 +67,8 @@ export default function roomSetup(scene) {
   front.material = matTransparent
   back.material = dynamicMaterial
 
+  // right.material.emissiveColor = new BABYLON.Color3(0, 1, 1)
+
   
   const wallImpostor = mesh => new BABYLON.PhysicsImpostor(mesh, BABYLON.PhysicsImpostor.BoxImpostor, { mass: 0, restitution: 1, friction: 0 }, scene)
 
@@ -80,13 +82,13 @@ export default function roomSetup(scene) {
   drawText('0')
 
   leftRight = (on) => {
-    left.material.alpha = on ? 1 : 0.05 // = on ? undefined : roadmaterial
-    right.material.alpha = on ? 1 : 0.05 // = on ? undefined : roadmaterial
+    left.material.alpha = on ? 1 : 0.05
+    right.material.alpha = on ? 1 : 0.05
   }
 
   topBottom = (on) => {
-    top.material.alpha = on ? 1 : 0.05 // = on ? undefined : roadmaterial
-    bottom.material.alpha = on ? 1 : 0.05 // = on ? undefined : roadmaterial
+    top.material.alpha = on ? 1 : 0.05
+    bottom.material.alpha = on ? 1 : 0.05
   }
 
   return {
