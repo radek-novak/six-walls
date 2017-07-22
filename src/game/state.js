@@ -1,5 +1,9 @@
 import {startBall, resetBall, stopBall} from '../graphics/ball'
-import {drawText} from '../graphics/room'
+import {
+  drawText,
+  leftRight,
+  topBottom
+} from '../graphics/room'
 
 const STATE = {
   LOST: 'LOST',
@@ -10,9 +14,14 @@ const STATE = {
 const game = {
   _points: 0,
   _state: STATE.PAUSED,
+  _level: 1,
 
   get state() {
     return this._state
+  },
+
+  get level() {
+    return this._level
   },
 
   get points() {
@@ -27,7 +36,20 @@ const game = {
   set points(newpoints) {
     this._points = newpoints
     drawText(this.points)
+
+    if (newpoints >= 5) {
+      stopBall()
+      this.state = STATE.PAUSED
+      this.level = this.level + 1
+    }
+
     this.onupdate({points: this.points, state: this.state})
+  },
+
+  set level(newlevel) {
+    this._level = newlevel
+    topBottom(newlevel <= 1)
+    leftRight(newlevel <= 2)
   },
 
   start() {

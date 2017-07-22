@@ -24,7 +24,7 @@ export function paddle(scene) {
   }
 
   return {
-    paddle,
+    mesh: paddle,
     hit
   }
 }
@@ -32,9 +32,8 @@ export function paddle(scene) {
 export function frontPaddle(scene) {
   const aPaddle = paddle(scene)
 
-  aPaddle.paddle.rotation.z = Math.PI / 2
-  aPaddle.paddle.visibility = 0.5
-  aPaddle.paddle.position.z = config.room.length * config.planeSize / 2 - 0.001
+  aPaddle.mesh.rotation.z = Math.PI / 2
+  aPaddle.mesh.position.z = config.room.length * config.planeSize / 2 - 0.001
 
   return aPaddle
 }
@@ -42,9 +41,43 @@ export function frontPaddle(scene) {
 export function backPaddle(scene) {
   const aPaddle = paddle(scene)
 
-  aPaddle.paddle.rotation.z = Math.PI / 2
-  aPaddle.paddle.visibility = 0.5
-  aPaddle.paddle.position.z = -config.room.length * config.planeSize / 2 + 0.001
+  aPaddle.mesh.rotation.z = Math.PI / 2
+  aPaddle.mesh.position.z = -config.room.length * config.planeSize / 2 + 0.001
+
+  return aPaddle
+}
+
+export function topPaddle(scene) {
+  const aPaddle = paddle(scene)
+
+  aPaddle.mesh.rotation.y = Math.PI / 2
+  aPaddle.mesh.position.y = config.room.length * config.planeSize / 2 - 0.001
+
+  return aPaddle
+}
+
+export function bottomPaddle(scene) {
+  const aPaddle = paddle(scene)
+
+  aPaddle.mesh.rotation.y = Math.PI / 2
+  aPaddle.mesh.position.y = -config.room.length * config.planeSize / 2 + 0.001
+
+  return aPaddle
+}
+
+export function leftPaddle(scene) {
+  const aPaddle = paddle(scene)
+
+  aPaddle.mesh.rotation.x = Math.PI / 2
+  aPaddle.mesh.position.x = config.room.length * config.planeSize / 2 - 0.001
+
+  return aPaddle
+}
+export function rightPaddle(scene) {
+  const aPaddle = paddle(scene)
+
+  aPaddle.mesh.rotation.x = Math.PI / 2
+  aPaddle.mesh.position.x = -config.room.length * config.planeSize / 2 + 0.001
 
   return aPaddle
 }
