@@ -9,5 +9,6 @@ export default {
     primary: [1, 0.84, 0]
   },
 
-  levelPoints: 5
+  levelPoints: 5,
+  lastLevel: 3
 }

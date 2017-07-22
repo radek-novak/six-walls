@@ -11,6 +11,7 @@ import {
 } from '../graphics/paddle'
 
 import config from '../config'
+import constants from '../constants'
 
 const STATE = {
   LOST: 'LOST',
@@ -19,6 +20,7 @@ const STATE = {
 }
 
 const game = {
+  maxlevel: 1,
   _points: 0,
   _state: STATE.PAUSED,
   _level: 1,
@@ -37,7 +39,7 @@ const game = {
 
   set state(newstate) {
     this._state = newstate
-    this.onupdate({points: this.points, state: this.state})
+    this.onupdate({points: this.points, state: this.state, level: this.level})
   },
 
   set points(newpoints) {
@@ -50,15 +52,22 @@ const game = {
       this.level = this.level + 1
     }
 
-    this.onupdate({points: this.points, state: this.state})
+    this.onupdate({points: this.points, state: this.state, level: this.level})
   },
 
   set level(newlevel) {
+    if (newlevel > config.lastLevel) return;
     this._level = newlevel
+    this.maxlevel = Math.max(newlevel, this.maxlevel)
     topBottom(newlevel <= 1)
     leftRight(newlevel <= 2)
     topBottomPaddle(newlevel > 1)
     leftRightPaddle(newlevel > 2)
+
+    if (localStorage.getItem(constants.LEVEL) < newlevel)
+      localStorage.setItem(constants.LEVEL, newlevel)
+
+    this.onupdate({points: this.points, state: this.state, level: this.level})
   },
 
   start() {

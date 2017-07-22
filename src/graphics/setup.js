@@ -1,6 +1,7 @@
 import BABYLON from '../Babylon'
 import {throttle} from 'lodash'
 import config from '../config'
+import constants from '../constants'
 import roomSetup from './room'
 import ballSetup from './ball'
 import camera from './camera'
@@ -46,7 +47,8 @@ export default function setup(canvas, engine, updateState) {
     const leftPaddleMesh = leftPaddle.mesh
     const rightPaddleMesh = rightPaddle.mesh
 
-    game.level = 1
+    game.onupdate = updateState
+    game.level = parseInt(localStorage.getItem(constants.LEVEL) || '1', 10)
 
 
     const paddleLimits = front.getBoundingInfo().boundingBox
@@ -79,9 +81,6 @@ export default function setup(canvas, engine, updateState) {
         }
       }
     }, 16)
-
-    game.onupdate = updateState
-
 
     canvas.addEventListener('click', ()=> {
       if (game.isPaused()) return game.start()
