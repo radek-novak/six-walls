@@ -10,6 +10,8 @@ import {
   topBottomPaddle
 } from '../graphics/paddle'
 
+import config from '../config'
+
 const STATE = {
   LOST: 'LOST',
   PAUSED: 'PAUSED',
@@ -42,7 +44,7 @@ const game = {
     this._points = newpoints
     drawText(this.points)
 
-    if (newpoints >= 5) {
+    if (newpoints >= config.levelPoints) {
       stopBall()
       this.state = STATE.PAUSED
       this.level = this.level + 1

@@ -1,8 +1,8 @@
 import BABYLON from '../Babylon'
-import config from './config'
+import config from '../config'
 
-const normalColor = new BABYLON.Color3(0.1, 0.1, 0.32)
-const hitColor = new BABYLON.Color3(0.1, 0.82, 0.1)
+const normalColor = new BABYLON.Color3(0.1, 0.1, 0.12)
+const hitColor = new BABYLON.Color3(.15, .15, 0)
 const blank = new BABYLON.Color4(0, 0, 0, 0)
 let leftRightPaddle = _ => null
 let topBottomPaddle = _ => null
@@ -56,6 +56,7 @@ function topPaddleF(scene) {
 
   aPaddle.mesh.rotation.y = Math.PI / 2
   aPaddle.mesh.position.y = config.room.length * config.planeSize / 2 - 0.001
+  aPaddle.mesh.material.emissiveColor = new BABYLON.Color3(1, 0.4, 0)
   
   return aPaddle
 }
@@ -74,7 +75,6 @@ function leftPaddleF(scene) {
   
   aPaddle.mesh.rotation.x = Math.PI / 2
   aPaddle.mesh.position.x = config.room.length * config.planeSize / 2 - 0.001
-  // aPaddle.mesh.material.emissiveColor = new BABYLON.Color3(1, 0.4, 0)
   
   return aPaddle
 }

@@ -1,21 +1,12 @@
 import BABYLON from '../Babylon'
 import {throttle} from 'lodash'
-import config from './config'
+import config from '../config'
 import roomSetup from './room'
 import ballSetup from './ball'
 import camera from './camera'
 import light from './light'
 import physics from './physics'
 import setupPaddle from './paddle'
-// import {
-//   setupPaddle
-//   frontPaddle,
-//   backPaddle,
-//   bottomPaddle,
-//   topPaddle,
-//   leftPaddle,
-//   rightPaddle
-// } from './paddle'
 import {limitRange} from '../helpers/limit'
 import {game} from '../game/state'
 import gameWall from '../game/gameWall'
@@ -111,8 +102,8 @@ export default function setup(canvas, engine, updateState) {
       }
 
       if (game.level > 2) {
-        gameWall(rightPaddleMesh, left, ballMesh, game, leftPaddle.hit)
-        gameWall(leftPaddleMesh, right, ballMesh, game, rightPaddle.hit)
+        gameWall(rightPaddleMesh, right, ballMesh, game, rightPaddle.hit)
+        gameWall(leftPaddleMesh, left, ballMesh, game, leftPaddle.hit)
       }
     })
 
